@@ -28,7 +28,7 @@ int buscar_ts(char * lexema);
 /*
   Inserta un nuevo identificador en la tabla de símbolos con el lexema especificado.
 */
-void insertar_ts(char * lexema);
+void insertar_ts(char * name, int type);
 
 /*
   Libera la memoria reservada para el abb.

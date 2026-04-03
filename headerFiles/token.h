@@ -5,8 +5,12 @@
   Estructura para los tokens que intercambian el analizador lexico y el sintáctico.
 */
 typedef struct {
-    int comp_lexico; //Código numérico correspondiente al componente léxico
-    char *lexema; //Lexema
+    char * name;
+    int type;
+    union {
+      double var;
+      double (*fnctptr)();
+    } value;
 } TOKEN;
 
 #endif /* TOKEN_H */

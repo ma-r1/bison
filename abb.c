@@ -18,7 +18,7 @@ struct celda {
 
 /*Extraer la clave de una celda */ //Si la clave es orden alfabético
 TIPOCLAVE _clave_elem(TIPOELEMENTOABB *E) {
-    return E->lexema;
+    return E->name;
 }
 
 /* Esta funcion puente nos permite modificar el tipo de
@@ -34,9 +34,9 @@ int _comparar_claves(TIPOCLAVE cl1, TIPOCLAVE cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(TIPOELEMENTOABB *E) {
-    if(E->lexema != NULL){
-        free(E->lexema);
-        E->lexema = NULL;
+    if(E->name != NULL){
+        free(E->name);
+        E->name = NULL;
     }
 }
 
@@ -129,10 +129,10 @@ void insertarElementoAbb(TABB *A, TIPOELEMENTOABB E) {
         *A = (TABB) malloc(sizeof (struct celda));
         (*A)->info = E;
 
-        if (E.lexema != NULL) {
-            (*A)->info.lexema = (char*)malloc(strlen(E.lexema) + 1);
-            strcpy((*A)->info.lexema, E.lexema);
-            (*A)->info.lexema[strlen(E.lexema)] = '\0';
+        if (E.name != NULL) {
+            (*A)->info.name = (char*)malloc(strlen(E.name) + 1);
+            strcpy((*A)->info.name, E.name);
+            (*A)->info.name[strlen(E.name)] = '\0';
         }
         
         (*A)->izq = NULL;
@@ -206,9 +206,9 @@ void _modificar(TABB A, TIPOCLAVE cl, TIPOELEMENTOABB nodo) {
     int comp = _comparar_clave_elem(cl, A->info);
     if (comp == 0) {
         A->info = nodo;
-        if (nodo.lexema != NULL) {
-            A->info.lexema = (char*)malloc(strlen(nodo.lexema) + 1);
-            strcpy(A->info.lexema, nodo.lexema);
+        if (nodo.name != NULL) {
+            A->info.name = (char*)malloc(strlen(nodo.name) + 1);
+            strcpy(A->info.name, nodo.name);
         }
     } else if (comp < 0) {
         _modificar(A->izq, cl, nodo);

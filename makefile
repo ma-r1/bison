@@ -9,20 +9,23 @@ HEADER_FILES_DIR = ./headerFiles
 OUTPUT = main
 
 #archivo fuente de flex
-FLEX_FILE = especificacion.l
+FLEX_FILE = lex.l
+
+#archivo fuente de bison
+BISON_FILE = sin.y
 
 #ficheros .h
 HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/asin.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h
 
 #archivos .c necesarios
-SRCS = abb.c asin.c errores.c main.c ts.c lex.yy.c
+SRCS = abb.c asin.c errores.c main.c ts.c lex.yy.c sin.tab.c
 
 #todos los .o con un analogo .c en SRCS
 OBJS = $(SRCS:.c=.o)
 
 #REGLA 1: genera el ejecutable, dependencia de los .o 
 $(OUTPUT): $(OBJS)
-	$(CC) -o $(OUTPUT) $(OBJS) -lfl
+	$(CC) -o $(OUTPUT) $(OBJS) -lfl -lm
 
 #REGLA 2: genera los .o cuando es necesario, dependencia de los .c y .h
 #solo genera los .o necesarios por cambios en los .c o .h
@@ -33,10 +36,14 @@ $(OUTPUT): $(OBJS)
 lex.yy.c: $(FLEX_FILE)
 	flex $(FLEX_FILE)
 
-#REGLA 4: borra el ejecutable (prerrequisito: clean)
+#REGLA 4
+sin.tab.c: $(BISON_FILE)
+	bison $(BISON_FILE) -o sin.tab.c
+
+#REGLA 5: borra el ejecutable (prerrequisito: clean)
 cleanall: clean
 	rm -f $(OUTPUT) 
 
-#REGLA 5: borra los ficheros .o y los de backup
+#REGLA 6: borra los ficheros .o y los de backup
 clean:
 	rm -f *.o *~

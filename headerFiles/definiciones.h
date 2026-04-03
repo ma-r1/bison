@@ -4,7 +4,8 @@
 
 //Códigos numéricos correspondientes a los componentes léxicos
 
-#define ID 301
-#define DECIMAL 302
+#define NUM 301
+#define VAR 302
+#define FNCT 303
 
 #endif //DEFINICIONES_H

@@ -7,6 +7,7 @@
 
 extern FILE * yyin;
 extern int yylex_destroy(void);
+extern int yyparse(void);
 
 int main(int argc, char * argv[]) {
   inicializar_ts();
@@ -17,7 +18,7 @@ int main(int argc, char * argv[]) {
   yyin = stdin;
 
   //Bucle principal
-  imprimir_componentes_lexicos();
+  yyparse();
 
   imprimir_ts();
   if(fclose(yyin)!=0){

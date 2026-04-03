@@ -37,3 +37,7 @@ void error_archivo_no_cerrado(){
   yylex_destroy();
   exit(1); //Es un error grave, cerramos
 }
+
+void yyerror(char * s) {
+  printf("%s\n", s);
+}

@@ -24,16 +24,16 @@ VARIABLE   [a-z]
 {VARIABLE} {
   int buscar = buscar_ts(yytext);
   if (buscar == -1) {
-    insertar_ts(yytext);
-    return ID;
+    insertar_ts(yytext, VAR);
+    return(VAR);
   }
   return buscar;
 }
 
 
-{DIGITO}+               {return DECIMAL;}
-{DIGITO}+"."{DIGITO}+   {return DECIMAL;}
-"."{DIGITO}+            {return DECIMAL;}
+{DIGITO}+               {return NUM;}
+{DIGITO}+"."{DIGITO}+   {return NUM;}
+"."{DIGITO}+            {return NUM;}
 
 [;()[\]{},\-*<>\\=+/\.] {return yytext[0];}
 

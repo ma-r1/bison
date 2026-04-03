@@ -790,8 +790,8 @@ YY_RULE_SETUP
 {
   int buscar = buscar_ts(yytext);
   if (buscar == -1) {
-    insertar_ts(yytext);
-    return ID;
+    insertar_ts(yytext, VAR);
+    return(VAR);
   }
   return buscar;
 }
@@ -799,17 +799,17 @@ YY_RULE_SETUP
 case 3:
 YY_RULE_SETUP
 #line 35 "especificacion.l"
-{return DECIMAL;}
+{return NUM;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 36 "especificacion.l"
-{return DECIMAL;}
+{return NUM;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 37 "especificacion.l"
-{return DECIMAL;}
+{return NUM;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
