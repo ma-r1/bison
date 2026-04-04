@@ -15,10 +15,10 @@ FLEX_FILE = lex.l
 BISON_FILE = sin.y
 
 #ficheros .h
-HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/asin.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h
+HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h
 
 #archivos .c necesarios
-SRCS = abb.c asin.c errores.c main.c ts.c lex.yy.c sin.tab.c
+SRCS = abb.c errores.c main.c ts.c lex.yy.c sin.tab.c
 
 #todos los .o con un analogo .c en SRCS
 OBJS = $(SRCS:.c=.o)
@@ -38,7 +38,7 @@ lex.yy.c: $(FLEX_FILE)
 
 #REGLA 4
 sin.tab.c: $(BISON_FILE)
-	bison $(BISON_FILE) -o sin.tab.c
+	bison $(BISON_FILE) --defines=$(HEADER_FILES_DIR)/sin.tab.h  -o sin.tab.c
 
 #REGLA 5: borra el ejecutable (prerrequisito: clean)
 cleanall: clean

@@ -98,57 +98,7 @@
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    NUM = 258,                     /* NUM  */
-    VAR = 259,                     /* VAR  */
-    FNCT = 260,                    /* FNCT  */
-    NEG = 261                      /* NEG  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 9 "sin.y"
-
-  double val;
-  TOKEN *tptr;
-
-#line 137 "sin.tab.c"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-
+#include "sin.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -560,7 +510,7 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int8 yyrline[] =
 {
        0,    26,    26,    27,    30,    31,    32,    34,    35,    36,
-      37,    38,    39,    40,    41,    42,    43,    44
+      39,    40,    41,    42,    43,    44,    45,    46
 };
 #endif
 
@@ -1143,83 +1093,85 @@ yyreduce:
   case 5: /* line: exp '\n'  */
 #line 31 "sin.y"
                               {printf("\t%.10g\n", (yyvsp[-1].val));}
-#line 1147 "sin.tab.c"
+#line 1097 "sin.tab.c"
     break;
 
   case 6: /* line: error '\n'  */
 #line 32 "sin.y"
                               {yyerrok;}
-#line 1153 "sin.tab.c"
+#line 1103 "sin.tab.c"
     break;
 
   case 7: /* exp: NUM  */
 #line 34 "sin.y"
                               {(yyval.val) = (yyvsp[0].val);}
-#line 1159 "sin.tab.c"
+#line 1109 "sin.tab.c"
     break;
 
   case 8: /* exp: VAR  */
 #line 35 "sin.y"
                               {(yyval.val) = (yyvsp[0].tptr)->value.var;}
-#line 1165 "sin.tab.c"
+#line 1115 "sin.tab.c"
     break;
 
   case 9: /* exp: VAR '=' exp  */
 #line 36 "sin.y"
-                              {(yyval.val) = (yyvsp[0].val); (yyvsp[-2].tptr)->value.var=(yyvsp[0].val);}
-#line 1171 "sin.tab.c"
+                              {(yyval.val) = (yyvsp[0].val); 
+                              (yyvsp[-2].tptr)->value.var=(yyvsp[0].val);
+                              actualizar_variable((yyvsp[-2].tptr)->name, (yyvsp[0].val));}
+#line 1123 "sin.tab.c"
     break;
 
   case 10: /* exp: FNCT '(' exp ')'  */
-#line 37 "sin.y"
+#line 39 "sin.y"
                               {(yyval.val) = (*((yyvsp[-3].tptr)->value.fnctptr))((yyvsp[-1].val));}
-#line 1177 "sin.tab.c"
+#line 1129 "sin.tab.c"
     break;
 
   case 11: /* exp: exp '+' exp  */
-#line 38 "sin.y"
+#line 40 "sin.y"
                               {(yyval.val) = (yyvsp[-2].val) + (yyvsp[0].val);}
-#line 1183 "sin.tab.c"
+#line 1135 "sin.tab.c"
     break;
 
   case 12: /* exp: exp '-' exp  */
-#line 39 "sin.y"
+#line 41 "sin.y"
                               {(yyval.val) = (yyvsp[-2].val) - (yyvsp[0].val);}
-#line 1189 "sin.tab.c"
+#line 1141 "sin.tab.c"
     break;
 
   case 13: /* exp: exp '*' exp  */
-#line 40 "sin.y"
+#line 42 "sin.y"
                               {(yyval.val) = (yyvsp[-2].val) * (yyvsp[0].val);}
-#line 1195 "sin.tab.c"
+#line 1147 "sin.tab.c"
     break;
 
   case 14: /* exp: exp '/' exp  */
-#line 41 "sin.y"
+#line 43 "sin.y"
                               {(yyval.val) = (yyvsp[-2].val) / (yyvsp[0].val);}
-#line 1201 "sin.tab.c"
+#line 1153 "sin.tab.c"
     break;
 
   case 15: /* exp: '-' exp  */
-#line 42 "sin.y"
+#line 44 "sin.y"
                               {(yyval.val) = -(yyvsp[0].val);}
-#line 1207 "sin.tab.c"
+#line 1159 "sin.tab.c"
     break;
 
   case 16: /* exp: exp '^' exp  */
-#line 43 "sin.y"
+#line 45 "sin.y"
                               {(yyval.val) = pow ((yyvsp[-2].val), (yyvsp[0].val));}
-#line 1213 "sin.tab.c"
+#line 1165 "sin.tab.c"
     break;
 
   case 17: /* exp: '(' exp ')'  */
-#line 44 "sin.y"
+#line 46 "sin.y"
                               {(yyval.val) = (yyvsp[-1].val);}
-#line 1219 "sin.tab.c"
+#line 1171 "sin.tab.c"
     break;
 
 
-#line 1223 "sin.tab.c"
+#line 1175 "sin.tab.c"
 
       default: break;
     }
@@ -1412,6 +1364,6 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 46 "sin.y"
+#line 47 "sin.y"
 
 

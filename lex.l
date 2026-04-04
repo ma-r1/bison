@@ -3,6 +3,7 @@
   #include "definiciones.h"
   #include "ts.h"
   #include "errores.h"
+  #include "sin.tab.h"
 %}
 
 DIGITO    [0-9]
@@ -18,25 +19,25 @@ VARIABLE   [a-z]
 
 
   /*Ignora espacios en blanco*/
-[ \t\n]+                {}
+[ \t]+                      {}
 
   /*Inserta IDs nuevos en la ts o devuelve el componente léxico del ID o keyword en la ts*/
 {VARIABLE} {
-  int buscar = buscar_ts(yytext);
-  if (buscar == -1) {
-    insertar_ts(yytext, VAR);
-    return(VAR);
+  TOKEN * buscar = buscar_ts(yytext);
+  if (buscar == NULL) {
+    buscar = insertar_ts(yytext, VAR);
   }
-  return buscar;
+  yylval.tptr=buscar;
+  return buscar->type;
 }
 
+{DIGITO}+                   {yylval.val=atof(yytext); return NUM;}
+{DIGITO}+"."{DIGITO}+       {yylval.val=atof(yytext); return NUM;}
+"."{DIGITO}+                {yylval.val=atof(yytext); return NUM;}
 
-{DIGITO}+               {return NUM;}
-{DIGITO}+"."{DIGITO}+   {return NUM;}
-"."{DIGITO}+            {return NUM;}
+[;()[\]{},\-*<>\\=+/\.'\n'] {return yytext[0];}
 
-[;()[\]{},\-*<>\\=+/\.] {return yytext[0];}
-
-.                       {alex_error_caracter(yytext[0]);}
+"exit"                      {return EOF;}
+.                           {alex_error_caracter(yytext[0]);}
 
 %%

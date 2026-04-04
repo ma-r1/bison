@@ -67,12 +67,11 @@ unsigned esMiembroAbb(TABB A, TIPOELEMENTOABB E);
 
 /**
  * Busca un nodo con clave <cl> en el arbol y, si existe
- * modifica el puntero <nodo> para que lo apunte.
+ * devuelve un puntero a él.
  * @param A Arbol binario en el que se busca el nodo.
  * @param cl Clave que se buscara.
- * @param nodo Puntero a un tipoelem.
  */
-void buscarNodoAbb(TABB A, TIPOCLAVE cl, TIPOELEMENTOABB *nodo);
+TIPOELEMENTOABB * buscarNodoAbb(TABB A, TIPOCLAVE cl);
 
 //FUNCIONES DE MODIFICACIÓN
 /**

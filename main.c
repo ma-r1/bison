@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "asin.h"
 #include "errores.h"
 #include "ts.h"
 
@@ -13,11 +12,8 @@ int main(int argc, char * argv[]) {
   inicializar_ts();
   imprimir_ts();
 
-  //Si sólo hay un argumento (el nombre del programa), el fichero de entrada es regression.d.
-  //En caso contrario, el fichero de entrada es el argumento especificado
   yyin = stdin;
 
-  //Bucle principal
   yyparse();
 
   imprimir_ts();

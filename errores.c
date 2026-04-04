@@ -39,5 +39,5 @@ void error_archivo_no_cerrado(){
 }
 
 void yyerror(char * s) {
-  printf("%s\n", s);
+  printf("ERROR sintáctico: %s\n", s);
 }

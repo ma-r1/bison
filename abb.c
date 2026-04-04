@@ -105,18 +105,18 @@ unsigned esMiembroAbb(TABB A, TIPOELEMENTOABB E) {
     return _es_miembro_clave(A, _clave_elem(&E));
 }
 
-void buscarNodoAbb(TABB A, TIPOCLAVE cl, TIPOELEMENTOABB *nodo) {
+TIPOELEMENTOABB  * buscarNodoAbb(TABB A, TIPOCLAVE cl) {
     if (esAbbVacio(A)) {
-        return;
+        return 0;
     }
     int comp = _comparar_clave_elem(cl, A->info);
 
     if (comp == 0) { // cl == A->info
-        *nodo = A->info;
+        return &(A->info);
     } else if (comp < 0) { // cl < A->info
-        buscarNodoAbb(A->izq, cl, nodo);
+        return buscarNodoAbb(A->izq, cl);
     } else { // cl > A->info
-        buscarNodoAbb(A->der, cl, nodo);
+        return buscarNodoAbb(A->der, cl);
     }
 }
 //OPERACIONES DE MODIFICACIÓN

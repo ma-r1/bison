@@ -7,6 +7,7 @@
 #include "token.h"
 #include "definiciones.h"
 #include "abb.h"
+#include "sin.tab.h"
 
 static TS ts; //Almacena el abb
 
@@ -17,16 +18,15 @@ struct init {
 
 void inicializar_ts() {
   crearAbb(&ts);
-  TOKEN *ptr;
 
   struct init arith_fncts[] = {
-    "sin", sin,
-    "cos", cos,
-    "atan", atan,
-    "ln", log,
-    "exp", exp,
-    "sqrt", sqrt,
-    0, 0
+    {"sin", sin},
+    {"cos", cos},
+    {"atan", atan},
+    {"ln", log},
+    {"exp", exp},
+    {"sqrt", sqrt},
+    {0, 0}
   };
 
   for (int i=0; arith_fncts[i].fname != 0; i++){
@@ -39,20 +39,29 @@ void inicializar_ts() {
   return;
 }
 
-int buscar_ts(char * name){
-  TOKEN token;
-  token.type = 0;
-  buscarNodoAbb(ts, name, &token);
-  if (token.type != 0) return token.type; //si se modificó el valor del componente léxico es que lo encontró en el abb, así que lo devolvemos
-  return -1; //en caso contrario no se encontró en el abb
+TOKEN * buscar_ts(char * name){
+  TOKEN * token = buscarNodoAbb(ts, name);
+  if (token != NULL){ 
+    printf("TS | Encontrado %s\n", token->name);
+    return token;
+  } 
+  return NULL;
 }
 
-void insertar_ts(char * name, int type){
+TOKEN * insertar_ts(char * name, int type){
   TOKEN token;
   token.name = name;
   token.type = type;
   token.value.var = 0;
   insertarElementoAbb(&ts, token);
+  printf("TS | Insertado %s %d\n", token.name, token.type);
+  return (buscar_ts(name));
+}
+
+void actualizar_variable(char * name, float valor){
+  TOKEN * token = buscarNodoAbb(ts, name);
+  token->value.var = valor;
+  modificarElementoAbb(ts, *token);
 }
 
 void destruir_ts(){
@@ -71,7 +80,8 @@ void _imprimir_recursivo(TS a){
 
     leerElementoAbb(a, &token);
 
-    printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value);
+    if(token.type==VAR) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
+    if(token.type==FNCT) printf("|  %d  |  %s\n", token.type, token.name);
 
     _imprimir_recursivo(derAbb(a));
   }
