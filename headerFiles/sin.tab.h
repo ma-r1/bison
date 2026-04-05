@@ -57,7 +57,9 @@ extern int yydebug;
     NUM = 258,                     /* NUM  */
     VAR = 259,                     /* VAR  */
     FNCT = 260,                    /* FNCT  */
-    NEG = 261                      /* NEG  */
+    CONST = 261,                   /* CONST  */
+    ID_NO_DEF = 262,               /* ID_NO_DEF  */
+    NEG = 263                      /* NEG  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -66,12 +68,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "sin.y"
+#line 11 "sin.y"
 
   double val;
   TOKEN *tptr;
+  char *lexema;
 
-#line 75 "./headerFiles/sin.tab.h"
+#line 78 "./headerFiles/sin.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

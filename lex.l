@@ -35,11 +35,13 @@ LETRA     [a-zA-Z]
   /*Inserta IDs nuevos en la ts o devuelve el componente léxico del ID o keyword en la ts*/
 {LETRA}+ {
   TOKEN * buscar = buscar_ts(yytext);
-  if (buscar == NULL) {
-    buscar = insertar_ts(yytext, VAR);
+  if (buscar != NULL){
+    yylval.tptr = buscar;
+    return buscar->type;
+  } else{
+    yylval.lexema = strdup(yytext);
+    return ID_NO_DEF;
   }
-  yylval.tptr=buscar;
-  return buscar->type;
 }
 
 {DIGITO}+                   {yylval.val=atof(yytext); return NUM;}

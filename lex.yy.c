@@ -805,35 +805,37 @@ YY_RULE_SETUP
 #line 37 "lex.l"
 {
   TOKEN * buscar = buscar_ts(yytext);
-  if (buscar == NULL) {
-    buscar = insertar_ts(yytext, VAR);
+  if (buscar != NULL){
+    yylval.tptr = buscar;
+    return buscar->type;
+  } else{
+    yylval.lexema = strdup(yytext);
+    return ID_NO_DEF;
   }
-  yylval.tptr=buscar;
-  return buscar->type;
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 46 "lex.l"
+#line 48 "lex.l"
 {yylval.val=atof(yytext); return NUM;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 47 "lex.l"
+#line 49 "lex.l"
 {yylval.val=atof(yytext); return NUM;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 48 "lex.l"
+#line 50 "lex.l"
 {yylval.val=atof(yytext); return NUM;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 50 "lex.l"
+#line 52 "lex.l"
 {return yytext[0];}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 52 "lex.l"
+#line 54 "lex.l"
 {
   if (linea_actual[0] != '\0') printf("> %s\n", linea_actual);
   return 0;
@@ -841,15 +843,15 @@ case YY_STATE_EOF(INITIAL):
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 56 "lex.l"
+#line 58 "lex.l"
 {alex_error_caracter(yytext[0]);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 58 "lex.l"
+#line 60 "lex.l"
 ECHO;
 	YY_BREAK
-#line 853 "lex.yy.c"
+#line 855 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1910,6 +1912,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 58 "lex.l"
+#line 60 "lex.l"
 
 

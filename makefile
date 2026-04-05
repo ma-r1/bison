@@ -15,10 +15,10 @@ FLEX_FILE = lex.l
 BISON_FILE = sin.y
 
 #ficheros .h
-HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h $(HEADER_FILES_DIR)/colores.h
+HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h $(HEADER_FILES_DIR)/comandos.h $(HEADER_FILES_DIR)/colores.h
 
 #archivos .c necesarios
-SRCS = abb.c errores.c main.c ts.c lex.yy.c sin.tab.c
+SRCS = abb.c errores.c main.c ts.c comandos.c lex.yy.c sin.tab.c
 
 #todos los .o con un analogo .c en SRCS
 OBJS = $(SRCS:.c=.o)

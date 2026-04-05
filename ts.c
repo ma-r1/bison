@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "ts.h"
 #include "math.h"
@@ -8,6 +9,7 @@
 #include "definiciones.h"
 #include "abb.h"
 #include "sin.tab.h"
+#include "comandos.h"
 
 static TS ts; //Almacena el abb
 
@@ -17,10 +19,16 @@ struct init_fun{
   double (*fncptr)();
 };
 
+struct init_cnst{
+  char * name;
+  int type;
+  double var;
+};
+
 void inicializar_ts() {
   crearAbb(&ts);
 
-  struct init_fun arith_fncts[] = {
+  struct init_fun funciones_iniciales[] = {
     {"sin", FNCT, &sin},
     {"cos", FNCT, &cos},
     {"atan", FNCT, &atan},
@@ -29,14 +37,34 @@ void inicializar_ts() {
     {"sqrt", FNCT, &sqrt},
     {"log", FNCT, &log},
     {"log10", FNCT, &log10},
+    {"exit", FNCT, (double (*)()) &salir},
     {0, 0, 0}
   };
 
-  for (int i=0; arith_fncts[i].name != 0; i++){
+  struct init_cnst constantes[] = {
+    {"PI", CONST, M_PI},
+    {"E", CONST, M_E},
+    {"LOG2E", CONST, M_LOG2E},
+    {"LN2", CONST, M_LN2},
+    {"SQRT2", CONST, M_SQRT2},
+    {"SQRT1_2", CONST, M_SQRT1_2},
+    {0, 0, 0}
+  };
+
+
+  for (int i=0; funciones_iniciales[i].name != 0; i++){
     TOKEN actual;
-    actual.name=arith_fncts[i].name;
-    actual.type=arith_fncts[i].type;
-    actual.value.fnctptr=arith_fncts[i].fncptr;
+    actual.name=funciones_iniciales[i].name;
+    actual.type=funciones_iniciales[i].type;
+    actual.value.fnctptr=funciones_iniciales[i].fncptr;
+    insertarElementoAbb(&ts, actual);
+  }
+
+  for (int i=0; constantes[i].name != 0; i++){
+    TOKEN actual;
+    actual.name=constantes[i].name;
+    actual.type=constantes[i].type;
+    actual.value.var=constantes[i].var;
     insertarElementoAbb(&ts, actual);
   }
   return;
@@ -83,7 +111,7 @@ void _imprimir_recursivo(TS a){
 
     leerElementoAbb(a, &token);
 
-    if(token.type==VAR) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
+    if(token.type==VAR || token.type==CONST) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
     if(token.type==FNCT) printf("|  %d  |  %s\n", token.type, token.name);
 
     _imprimir_recursivo(derAbb(a));
