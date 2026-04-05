@@ -1,13 +1,19 @@
 %{
   #include <math.h>
+  #include <string.h>
   #include "definiciones.h"
+  #include "colores.h"
   #include "ts.h"
   #include "errores.h"
   #include "sin.tab.h"
+
+  char linea_actual[1024] = "";
+
+  #define YY_USER_ACTION strcat(linea_actual, yytext);
 %}
 
 DIGITO    [0-9]
-VARIABLE   [a-z]
+LETRA     [a-zA-Z]
 
   /*OPCIONES DE FLEX*/
   /*yylineno hace que flex cuente automáticamente los saltos de línea*/
@@ -20,9 +26,14 @@ VARIABLE   [a-z]
 
   /*Ignora espacios en blanco*/
 [ \t]+                      {}
+\n {
+  printf(AZUL "> %s" RESET, linea_actual);
+  linea_actual[0] = '\0';
+  return '\n';
+}
 
   /*Inserta IDs nuevos en la ts o devuelve el componente léxico del ID o keyword en la ts*/
-{VARIABLE} {
+{LETRA}+ {
   TOKEN * buscar = buscar_ts(yytext);
   if (buscar == NULL) {
     buscar = insertar_ts(yytext, VAR);
@@ -35,9 +46,12 @@ VARIABLE   [a-z]
 {DIGITO}+"."{DIGITO}+       {yylval.val=atof(yytext); return NUM;}
 "."{DIGITO}+                {yylval.val=atof(yytext); return NUM;}
 
-[;()[\]{},\-*<>\\=+/\.'\n'] {return yytext[0];}
+[;()[\]{},\-*<>\\=+/\.] {return yytext[0];}
 
-"exit"                      {return EOF;}
+<<EOF>> {
+  if (linea_actual[0] != '\0') printf("> %s\n", linea_actual);
+  return 0;
+}
 .                           {alex_error_caracter(yytext[0]);}
 
 %%

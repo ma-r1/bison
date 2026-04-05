@@ -11,29 +11,32 @@
 
 static TS ts; //Almacena el abb
 
-struct init {
-  char *fname;
-  double (*fnct)();
+struct init_fun{
+  char * name;
+  int type;
+  double (*fncptr)();
 };
 
 void inicializar_ts() {
   crearAbb(&ts);
 
-  struct init arith_fncts[] = {
-    {"sin", sin},
-    {"cos", cos},
-    {"atan", atan},
-    {"ln", log},
-    {"exp", exp},
-    {"sqrt", sqrt},
-    {0, 0}
+  struct init_fun arith_fncts[] = {
+    {"sin", FNCT, &sin},
+    {"cos", FNCT, &cos},
+    {"atan", FNCT, &atan},
+    {"ln", FNCT, &log},
+    {"exp", FNCT, &exp},
+    {"sqrt", FNCT, &sqrt},
+    {"log", FNCT, &log},
+    {"log10", FNCT, &log10},
+    {0, 0, 0}
   };
 
-  for (int i=0; arith_fncts[i].fname != 0; i++){
+  for (int i=0; arith_fncts[i].name != 0; i++){
     TOKEN actual;
-    actual.name = arith_fncts[i].fname;
-    actual.type = FNCT;
-    actual.value.fnctptr = arith_fncts[i].fnct;
+    actual.name=arith_fncts[i].name;
+    actual.type=arith_fncts[i].type;
+    actual.value.fnctptr=arith_fncts[i].fncptr;
     insertarElementoAbb(&ts, actual);
   }
   return;

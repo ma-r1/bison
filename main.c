@@ -12,7 +12,9 @@ int main(int argc, char * argv[]) {
   inicializar_ts();
   imprimir_ts();
 
-  yyin = stdin;
+  if (argc < 2) {
+    yyin = stdin;
+  } else if ((yyin = fopen(argv[1], "r")) == NULL) error_archivo_no_abierto(argv[1]);
 
   yyparse();
 

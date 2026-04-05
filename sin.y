@@ -4,6 +4,7 @@
 #include "ts.h" 
 #include "token.h"
 #include "errores.h"
+#include "colores.h"
 %}
 
 %union{
@@ -24,11 +25,12 @@
 %%
 
 input:  /*vacio*/
-        | input line
+        | input line          {}
 ;
 line:   
         '\n'
-        | exp '\n'            {printf("\t%.10g\n", $1);}
+        | exp ';' '\n'        {}
+        | exp '\n'            {printf(VERDE ">> %g\n" RESET, $1);}
         | error '\n'          {yyerrok;}
 ;
 exp:    NUM                   {$$ = $1;}
