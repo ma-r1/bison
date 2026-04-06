@@ -38,9 +38,11 @@ void inicializar_ts() {
     {"log_num", FNCT, &log},
     {"pow_num_num", FNCT, &pow},
     {"log10_num", FNCT, &log10},
-    {"exit_void", FNCT, (double (*)()) &salir},
-    {"clear_void", FNCT, (double (*)()) &clean_total},
+    {"exit", FNCT, (double (*)()) &salir},
+    {"clear", FNCT, (double (*)()) &clean_total},
     {"clear_var", FNCT, (double (*)()) &clean_variable},
+    {"help", FNCT, (double (*)()) &mostrar_ayuda},
+    {"help_fnct", FNCT, (double (*)()) &mostrar_ayuda_comando},
     {0, 0, 0}
   };
 

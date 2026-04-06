@@ -7,8 +7,6 @@
 #include "errores.h"
 #include "colores.h"
 
-extern int yylex(void);
-extern void yyerror(const char *s);
 %}
 
 %union{
@@ -27,8 +25,11 @@ extern void yyerror(const char *s);
 %left '*' '/'
 %left NEG
 %right '^'
+ 
 
 %%
+
+
 
 input:    /*vacio*/
           | input line          {}
@@ -42,8 +43,7 @@ line:
 exp:      NUM                   {$$ = $1;}
           | VAR                 {$$ = $1->value.var;}
           | CONST               {$$ = $1->value.var;}
-          | ID_NO_DEF           {
-                                printf(ROJO "Error, variable '%s' no declarada.\n" RESET, $1);
+          | ID_NO_DEF           {printf(ROJO "Error, variable '%s' no declarada.\n" RESET, $1);
                                 free($1);
                                 YYERROR; /*detenemos el análisis de la línea*/
                                 }
@@ -54,9 +54,18 @@ exp:      NUM                   {$$ = $1;}
                                 TOKEN * nuevo = insertar_ts($1, VAR);
                                 nuevo->value.var=$3;
                                 free($1);}
-          | ID_NO_DEF '(' ')'   { char nombre_completo[256];
-                                sprintf(nombre_completo, "%s_void", $1);
-                                TOKEN *fun = buscar_ts(nombre_completo);
+          | FNCT '(' ')'        {$$=(*($1->value.fnctptr))();}
+          | FNCT '(' FNCT ')'   { if (strcmp($1->name, "help") == 0) {
+                                      char nombre_completo[256];
+                                      sprintf(nombre_completo, "%s_fnct", $1->name);
+                                      TOKEN *fun=buscar_ts(nombre_completo);
+                                      $$ = ((double (*)(char *))(fun->value.fnctptr))($3->name);
+                                  } else {
+                                      printf(ROJO "Error: La función '%s' no acepta nombres de funciones como argumento.\n" RESET, $1->name);
+                                      YYERROR;
+                                  }
+                                }
+          | ID_NO_DEF '(' ')'   {TOKEN *fun = buscar_ts($1);
                                 if (fun == NULL){
                                   printf(ROJO "Error: la función '%s()' no existe o requiere argumentos.\n" RESET, $1);
                                   YYERROR;
@@ -101,4 +110,3 @@ exp:      NUM                   {$$ = $1;}
 
 %%
 
- 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "errores.h"
+#include "colores.h"
 #include "ts.h"
 
 extern FILE * yyin;
@@ -16,6 +17,7 @@ int main(int argc, char * argv[]) {
     yyin = stdin;
   } else if ((yyin = fopen(argv[1], "r")) == NULL) error_archivo_no_abierto(argv[1]);
 
+  printf(AMARILLO "Escriba 'help()' para recibir ayuda.\n" RESET);
   yyparse();
 
   imprimir_ts();
