@@ -43,4 +43,8 @@ void imprimir_ts();
 
 void actualizar_variable(char * name, float valor);
 
+void vaciar_todas_variables();
+
+void vaciar_variable(char * name);
+
 #endif	// TS_H

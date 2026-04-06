@@ -29,15 +29,18 @@ void inicializar_ts() {
   crearAbb(&ts);
 
   struct init_fun funciones_iniciales[] = {
-    {"sin", FNCT, &sin},
-    {"cos", FNCT, &cos},
-    {"atan", FNCT, &atan},
-    {"ln", FNCT, &log},
-    {"exp", FNCT, &exp},
-    {"sqrt", FNCT, &sqrt},
-    {"log", FNCT, &log},
-    {"log10", FNCT, &log10},
-    {"exit", FNCT, (double (*)()) &salir},
+    {"sin_num", FNCT, &sin},
+    {"cos_num", FNCT, &cos},
+    {"atan_num", FNCT, &atan},
+    {"ln_num", FNCT, &log},
+    {"exp_num", FNCT, &exp},
+    {"sqrt_num", FNCT, &sqrt},
+    {"log_num", FNCT, &log},
+    {"pow_num_num", FNCT, &pow},
+    {"log10_num", FNCT, &log10},
+    {"exit_void", FNCT, (double (*)()) &salir},
+    {"clear_void", FNCT, (double (*)()) &clean_total},
+    {"clear_var", FNCT, (double (*)()) &clean_variable},
     {0, 0, 0}
   };
 
@@ -76,6 +79,7 @@ TOKEN * buscar_ts(char * name){
     printf("TS | Encontrado %s\n", token->name);
     return token;
   } 
+  printf("TS | No encontré %s.\n", name);
   return NULL;
 }
 
@@ -121,3 +125,27 @@ void _imprimir_recursivo(TS a){
 void imprimir_ts(){
   _imprimir_recursivo(ts);
 }
+
+int _borrar_variable_recursivo(TS a, char * name){
+  if (!esAbbVacio(a)){
+    TOKEN token;
+    leerElementoAbb(a, &token);
+    if(token.type==VAR && (strcmp(name, token.name) == 0 || strcmp(name, "")==0)){
+      suprimirElementoAbb(&ts, token);
+      return 1;
+    }
+    if (_borrar_variable_recursivo(izqAbb(a), name) == 1) return 1;
+    if (_borrar_variable_recursivo(derAbb(a), name) == 1) return 1;
+    return 0;
+  } 
+  return 0;
+}
+
+void vaciar_todas_variables(){
+  while (_borrar_variable_recursivo(ts, "")==1);
+}
+
+void vaciar_variable(char * name){
+  _borrar_variable_recursivo(ts, name);
+}
+

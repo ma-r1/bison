@@ -68,7 +68,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "sin.y"
+#line 14 "sin.y"
 
   double val;
   TOKEN *tptr;

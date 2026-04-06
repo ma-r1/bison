@@ -48,7 +48,7 @@ LETRA     [a-zA-Z]
 {DIGITO}+"."{DIGITO}+       {yylval.val=atof(yytext); return NUM;}
 "."{DIGITO}+                {yylval.val=atof(yytext); return NUM;}
 
-[;()[\]{},\-*<>\\=+/\.] {return yytext[0];}
+[;()[\]{},\-*<>\\=+/\.&] {return yytext[0];}
 
 <<EOF>> {
   if (linea_actual[0] != '\0') printf("> %s\n", linea_actual);
