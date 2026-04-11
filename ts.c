@@ -6,7 +6,6 @@
 #include "ts.h"
 #include "math.h"
 #include "token.h"
-#include "definiciones.h"
 #include "abb.h"
 #include "sin.tab.h"
 #include "comandos.h"
@@ -29,20 +28,22 @@ void inicializar_ts() {
   crearAbb(&ts);
 
   struct init_fun funciones_iniciales[] = {
-    {"sin_num", FNCT, &sin},
-    {"cos_num", FNCT, &cos},
-    {"atan_num", FNCT, &atan},
-    {"ln_num", FNCT, &log},
-    {"exp_num", FNCT, &exp},
-    {"sqrt_num", FNCT, &sqrt},
-    {"log_num", FNCT, &log},
-    {"pow_num_num", FNCT, &pow},
-    {"log10_num", FNCT, &log10},
-    {"exit", FNCT, (double (*)()) &salir},
-    {"clear", FNCT, (double (*)()) &clean_total},
-    {"clear_var", FNCT, (double (*)()) &clean_variable},
-    {"help", FNCT, (double (*)()) &mostrar_ayuda},
-    {"help_fnct", FNCT, (double (*)()) &mostrar_ayuda_comando},
+    {"sin", FNCT_1, &sin},
+    {"cos", FNCT_1, &cos},
+    {"atan", FNCT_1, &atan},
+    {"ln", FNCT_1, &log},
+    {"exp", FNCT_1, &exp},
+    {"sqrt", FNCT_1, &sqrt},
+    {"log", FNCT_1, &log},
+    {"pow", FNCT_2, &pow},
+    {"log10", FNCT_1, &log10},
+    {"exit", FNCT_0, (double (*)()) &salir},
+    {"clear", FNCT_0, &clean_total},
+    {"clear_var", FNCT_VAR,  &clean_variable},
+    {"help", FNCT_0, &mostrar_ayuda},
+    {"help_fun", FNCT_FNCT, &mostrar_ayuda_comando},
+    {"workspace", FNCT_0, &workspace},
+    {"load", FNCT_STR, &load},
     {0, 0, 0}
   };
 
@@ -109,24 +110,31 @@ void destruir_ts(){
   Función privada.
   Permite imprimir el abb sin tener que poner la TS como argumento de la función pública (así la variable de la ts puede ser privada a este archivo)
 */
-void _imprimir_recursivo(TS a){
+void _imprimir_recursivo(TS a, int filtrar){
   if(!esAbbVacio(a)){
     TOKEN token;
 
-    _imprimir_recursivo(izqAbb(a));
+    _imprimir_recursivo(izqAbb(a), filtrar);
 
     leerElementoAbb(a, &token);
 
-    if(token.type==VAR || token.type==CONST) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
-    if(token.type==FNCT) printf("|  %d  |  %s\n", token.type, token.name);
+    if(filtrar==0){
+      if(token.type==VAR || token.type==CONST) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
+      else printf("|  %d  |  %s\n", token.type, token.name);
+    }
+    else{
+      if(token.type==VAR) printf("|  %d  |  %s  |  %f\n", token.type, token.name, token.value.var);
+    }
 
-    _imprimir_recursivo(derAbb(a));
+    _imprimir_recursivo(derAbb(a), filtrar);
   }
 }
 
-void imprimir_ts(){
-  _imprimir_recursivo(ts);
+//Si el argumento es 0 imprime todo, si es cualquier otra cosa imprime sólo variables
+void imprimir_ts(int filtrar){
+  _imprimir_recursivo(ts, filtrar);
 }
+
 
 int _borrar_variable_recursivo(TS a, char * name){
   if (!esAbbVacio(a)){

@@ -15,7 +15,7 @@ FLEX_FILE = lex.l
 BISON_FILE = sin.y
 
 #ficheros .h
-HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h $(HEADER_FILES_DIR)/comandos.h $(HEADER_FILES_DIR)/colores.h
+HEADERS = $(HEADER_FILES_DIR)/token.h $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/definiciones.h $(HEADER_FILES_DIR)/errores.h $(HEADER_FILES_DIR)/ts.h $(HEADER_FILES_DIR)/comandos.h $(HEADER_FILES_DIR)/colores.h $(HEADER_FILES_DIR)/sin.tab.h
 
 #archivos .c necesarios
 SRCS = abb.c errores.c main.c ts.c comandos.c lex.yy.c sin.tab.c
@@ -37,7 +37,7 @@ lex.yy.c: $(FLEX_FILE)
 	flex $(FLEX_FILE)
 
 #REGLA 4
-sin.tab.c: $(BISON_FILE)
+sin.tab.c $(HEADER_FILES_DIR)/sin.tab.h: $(BISON_FILE)
 	bison $(BISON_FILE) --defines=$(HEADER_FILES_DIR)/sin.tab.h  -o sin.tab.c
 
 #REGLA 5: borra el ejecutable (prerrequisito: clean)

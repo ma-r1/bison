@@ -44,6 +44,12 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "sin.y"
+
+  #include "token.h"
+
+#line 53 "./headerFiles/sin.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -56,10 +62,16 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     NUM = 258,                     /* NUM  */
     VAR = 259,                     /* VAR  */
-    FNCT = 260,                    /* FNCT  */
-    CONST = 261,                   /* CONST  */
-    ID_NO_DEF = 262,               /* ID_NO_DEF  */
-    NEG = 263                      /* NEG  */
+    CONST = 260,                   /* CONST  */
+    FNCT_0 = 261,                  /* FNCT_0  */
+    FNCT_1 = 262,                  /* FNCT_1  */
+    FNCT_2 = 263,                  /* FNCT_2  */
+    FNCT_VAR = 264,                /* FNCT_VAR  */
+    FNCT_FNCT = 265,               /* FNCT_FNCT  */
+    FNCT_STR = 266,                /* FNCT_STR  */
+    CADENA = 267,                  /* CADENA  */
+    ID_NO_DEF = 268,               /* ID_NO_DEF  */
+    NEG = 269                      /* NEG  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -68,13 +80,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 12 "sin.y"
+#line 18 "sin.y"
 
   double val;
   TOKEN *tptr;
   char *lexema;
 
-#line 78 "./headerFiles/sin.tab.h"
+#line 90 "./headerFiles/sin.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -11,7 +11,7 @@ extern int yyparse(void);
 
 int main(int argc, char * argv[]) {
   inicializar_ts();
-  imprimir_ts();
+  imprimir_ts(0);
 
   if (argc < 2) {
     yyin = stdin;
@@ -20,7 +20,7 @@ int main(int argc, char * argv[]) {
   printf(AMARILLO "Escriba 'help()' para recibir ayuda.\n" RESET);
   yyparse();
 
-  imprimir_ts();
+  imprimir_ts(0);
   if(fclose(yyin)!=0){
     error_archivo_no_cerrado();
   }

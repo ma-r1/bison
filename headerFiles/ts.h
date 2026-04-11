@@ -39,7 +39,7 @@ void destruir_ts();
 /*
   Recorre y muestra por consola todo el contenido de la tabla de símbolos
 */
-void imprimir_ts();
+void imprimir_ts(int filtrar);
 
 void actualizar_variable(char * name, float valor);
 

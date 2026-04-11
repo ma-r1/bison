@@ -1,1 +1,4 @@
 2+3
+load("prueba2.txt")
+exit()
+4+5

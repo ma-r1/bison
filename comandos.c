@@ -4,7 +4,12 @@
 #include "colores.h"
 #include "ts.h"
 
+//NOTA poner ; en los comandos no impide que impriman cosas, solo sirve para ocultar su resultado (es siempre 0)
 extern int yylex_destroy(void);
+extern void yyrestart(FILE *input_file);
+extern FILE * yyin;
+
+FILE * archivo_top = NULL;
 
 void salir(){
   destruir_ts();
@@ -37,8 +42,22 @@ double mostrar_ayuda(){
 
 double mostrar_ayuda_comando(char * comando){
   if (!strcmp(comando, "help")) printf(AMARILLO "Muestra ayuda sobre todos los comandos. Con un argumento muestra ayuda sobre un comando en específico.\n" RESET);
-  if (!strcmp(comando, "clear")) printf(AMARILLO "Elimina todas las variables. Con un argumento elimina dicha variable si existe.\n" RESET);
-  if (!strcmp(comando, "exit")) printf(AMARILLO "Sale del programa.\n" RESET);
+  else if (!strcmp(comando, "clear")) printf(AMARILLO "Elimina todas las variables. Con un argumento elimina dicha variable si existe.\n" RESET);
+  else if (!strcmp(comando, "exit")) printf(AMARILLO "Sale del programa.\n" RESET);
   else printf(ROJO "No hay ayuda disponible para esa función.\n");
+  return 0;
+}
+
+double workspace(){
+  imprimir_ts(1);
+  return 0;
+}
+
+double load(char * ruta){
+  archivo_top = fopen(ruta, "r");
+  if (archivo_top == NULL) {
+    printf(ROJO "Error no se pudo abrir el archivo %s.\n", ruta);
+    return -1;
+  }
   return 0;
 }
