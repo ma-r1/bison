@@ -21,9 +21,6 @@ int main(int argc, char * argv[]) {
   yyparse();
 
   imprimir_ts(0);
-  if(fclose(yyin)!=0){
-    error_archivo_no_cerrado();
-  }
   yylex_destroy();
   destruir_ts();
   return 0;

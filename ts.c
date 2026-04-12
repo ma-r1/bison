@@ -38,12 +38,13 @@ void inicializar_ts() {
     {"pow", FNCT_2, &pow},
     {"log10", FNCT_1, &log10},
     {"exit", FNCT_0, (double (*)()) &salir},
-    {"clear", FNCT_0, &clean_total},
-    {"clear_var", FNCT_VAR,  &clean_variable},
+    {"clean", FNCT_0, &clean_total},
+    {"clean_var", FNCT_VAR,  &clean_variable},
     {"help", FNCT_0, &mostrar_ayuda},
     {"help_fun", FNCT_FNCT, &mostrar_ayuda_comando},
     {"workspace", FNCT_0, &workspace},
     {"load", FNCT_STR, &load},
+    {"clear", FNCT_0, &clear},
     {0, 0, 0}
   };
 

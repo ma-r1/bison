@@ -44,10 +44,13 @@ LETRA     [a-zA-Z_]
   }
 }
 
-\"[^\"]*\" {
+\"[^\"\n]*\" {
   yytext[yyleng-1] = '\0';
   yylval.lexema = strdup(yytext+1);
   return CADENA;
+}
+\"[^\"\n]* {
+  printf(ROJO "Error Léxico: Cadena sin cerrar %s.\n" RESET, yytext);
 }
 
 {DIGITO}+                   {yylval.val=atof(yytext); return NUM;}
@@ -76,4 +79,12 @@ LETRA     [a-zA-Z_]
 
 void abrir_archivo(FILE * archivo){
   yypush_buffer_state(yy_create_buffer(archivo, YY_BUF_SIZE));
+}
+
+void limpiar_pila() {
+  while (YY_CURRENT_BUFFER) {
+    if (yyin != stdin && yyin != NULL) fclose(yyin);
+    yypop_buffer_state();
+  }
+  yylex_destroy();
 }
